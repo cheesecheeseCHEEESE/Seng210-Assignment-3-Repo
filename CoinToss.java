@@ -80,9 +80,37 @@ public class CoinToss {
 					scanner.nextLine();
 				}
 			}
-			
 		}
-		System.out.println("Game over! Hope you enjoyed!");
+		
+		int correctGuesses = 0;
+		for(boolean guess: didPlayerGuessCorrect)
+		{
+			if(guess == true)
+			{
+				correctGuesses++;
+			}
+		}
+		float successRatio = ((float) correctGuesses / numOfTosses) * 100;
+		
+		int numOfHeads = 0;
+		int numOfTails = 0;
+		for(boolean coin : coinTosses)
+		{
+			if(coin == true)
+			{
+				numOfHeads++;
+			}
+			else //assumes the alternative is tails
+			{
+				numOfTails++;
+			}
+		}
+		
+		
+		System.out.println("Game over!");
+		System.out.println("There were "+numOfHeads +" Heads and "+numOfTails+" Tails");
+		System.out.println("You guessed correctly "+successRatio+"% of the time!");
+		System.out.println("Hope you enjoyed!");
 		scanner.close();
 		
 
