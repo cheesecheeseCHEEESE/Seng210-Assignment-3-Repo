@@ -11,9 +11,87 @@ public class CoinToss {
 		//Inital set up of random and scanner (for user input)
 		Random random = new Random();
 		Scanner scanner = new Scanner(System.in);
+		String coinHeadFace = "Heads";
+		String coinTailFace = "Tails";
 		
 		System.out.println("Welcome to the coin toss game!");
-		System.out.println("In this game, coins are tossed, and you guess Heads or Tails. Now:");
+		System.out.println("In this game, coins are tossed, and you guess Heads or Tails-");
+		
+		boolean acceptableAnswer = false;
+		while(acceptableAnswer == false)
+		{
+			System.out.println("Would you like to make your own custom coin faces?");
+			System.out.println("(enter true for yes, false for no)");
+			try
+			{	
+				boolean answer = scanner.nextBoolean();
+				
+				if(answer == true) //the editing of the faces is handled here
+				{
+					scanner.nextLine();
+					System.out.println("ooooh a special little snowflake, ok.");
+					System.out.println("What do you want on the first face instead of heads?");
+
+						boolean finishedHeads = false;
+						while(!finishedHeads)
+						{
+							String attemptedHeads = scanner.nextLine();
+							if(attemptedHeads.length() > 10)
+							{
+								System.out.println("Try to keep it within 10 characters");
+							}
+							else if (attemptedHeads.matches(".*\\d.*"))
+							{
+								System.out.println("Please try to avoid numbers");
+							}
+							else
+							{
+								coinHeadFace = attemptedHeads;
+								finishedHeads = true; 
+							}
+						}
+						System.out.println("What do you want on the second face instead of tails?");
+						boolean finishedTails = false;
+						while(!finishedTails)
+						{
+							String attemptedTails = scanner.nextLine();
+							if(attemptedTails.length() > 10)
+							{
+								System.out.println("Try to keep it within 10 characters");
+							}
+							else if (attemptedTails.matches(".*\\d.*"))
+							{
+								System.out.println("Please try to avoid numbers");
+							}
+							else
+							{
+								coinTailFace = attemptedTails;
+								finishedTails = true; 
+							}
+						}
+						System.out.println("Alright! Your custom coin now is "+coinHeadFace+" or "+coinTailFace);
+						acceptableAnswer = true;
+						//scanner.nextLine();
+				}
+				/*else if(answer == false)
+				{
+					Unused as of now, kept here incase that needs to change
+				}*/
+				else
+				{
+					System.out.println("You must like Vanilla Icecream. Anyway:");
+					acceptableAnswer = true;
+					scanner.nextLine();
+				}
+				
+			}
+			catch(Exception e)
+			{
+				System.out.println("Thats not a valid input");
+				scanner.nextLine();
+			}
+		}	
+		
 		
 		int numOfTosses = 0;
 		boolean validNumber = false; //for exiting exception loop
@@ -57,7 +135,7 @@ public class CoinToss {
 			boolean acceptableGuess = false; //for exiting exception loop
 			while(acceptableGuess == false)
 			{
-				System.out.println("Heads or Tails? (enter 'true' or 'false' to guess Heads or Tails)");
+				System.out.println(coinHeadFace + " or " +coinTailFace+ "? (enter 'true' or 'false' to guess)");
 				try
 				{	boolean playerGuess;
 					playerGuess = scanner.nextBoolean();
@@ -124,7 +202,7 @@ public class CoinToss {
 		
 		
 		System.out.println("Game over!");
-		System.out.println("There were "+numOfHeads +" Heads and "+numOfTails+" Tails");
+		System.out.println("There were "+numOfHeads+" "+coinHeadFace+" and "+numOfTails+" "+coinTailFace);
 		System.out.println("You guessed correctly "+successRatio+"% of the time!");
 		System.out.println("Your highest correct guess streak was "+highestStreak+" in a row!");
 		System.out.println("Hope you enjoyed!");
