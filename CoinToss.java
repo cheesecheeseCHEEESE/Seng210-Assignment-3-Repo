@@ -42,7 +42,10 @@ public class CoinToss {
 			boolean value = random.nextBoolean();
 			coinTosses.add(value);
 		}
+		
 
+		int correctGuessStreak = 0; //the current streak of correct guesses
+		int highestStreak = 0; //the highest streak of guesses the player has
 		
 		//List is used to track how many guess the player got correct
 		List<Boolean> didPlayerGuessCorrect = new ArrayList<>();
@@ -62,11 +65,18 @@ public class CoinToss {
 					if(playerGuess == coinTosses.get(i))
 					{
 						System.out.println("CORRECT! Nice job!");
+						correctGuessStreak++;
 						didPlayerGuessCorrect.add(true);
 					}
 					else
 					{
 						System.out.println("Unfortunatly that is incorrect. Good try though!");
+						//set the highest streak to the current streak if current streak is higher
+						if(correctGuessStreak > highestStreak)
+						{
+							highestStreak = correctGuessStreak;
+						}
+						correctGuessStreak = 0;
 						didPlayerGuessCorrect.add(false);
 						
 					}
@@ -80,6 +90,12 @@ public class CoinToss {
 					scanner.nextLine();
 				}
 			}
+		}
+		
+		//run one last time after the loop in case the player got ALL of them correct
+		if(correctGuessStreak > highestStreak)
+		{
+			highestStreak = correctGuessStreak;
 		}
 		
 		int correctGuesses = 0;
@@ -110,6 +126,7 @@ public class CoinToss {
 		System.out.println("Game over!");
 		System.out.println("There were "+numOfHeads +" Heads and "+numOfTails+" Tails");
 		System.out.println("You guessed correctly "+successRatio+"% of the time!");
+		System.out.println("Your highest correct guess streak was "+highestStreak+" in a row!");
 		System.out.println("Hope you enjoyed!");
 		scanner.close();
 		
