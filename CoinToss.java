@@ -104,16 +104,24 @@ public class CoinToss {
 				{
 					validGamemode = true;
 					System.out.println("Normal Mode selected");
+					scanner.nextLine();
 				}
 				else if (selectedGamemode == 2)
 				{
 					validGamemode = true;
 					System.out.println("Streak Mode selected");
+					scanner.nextLine();
+				}
+				else
+				{
+					System.out.println("Invalid Gamemode");
+					scanner.nextLine();
 				}
 			}
 			catch (Exception e)
 			{
 				System.out.println("Invalid Gamemode");
+				scanner.nextLine();
 			}
 		}
 		
@@ -246,12 +254,12 @@ public class CoinToss {
 				{
 					System.out.println(coinHeadFace + " or " +coinTailFace+ "? (enter 'true' or 'false' to guess)");
 					try
-					{	boolean playerGuess;
-						playerGuess = scanner.nextBoolean();
+					{	 
+						boolean playerGuess = scanner.nextBoolean();
 						
 						if(playerGuess == headsOrTails)
 						{
-							System.out.println("CORRECT! Nice job!");
+							System.out.println("CORRECT! Keep going!");
 							streak++;
 							acceptableGuess = true;
 						}
@@ -270,10 +278,13 @@ public class CoinToss {
 						System.out.println("Thats not a valid guess. Please try again");
 						scanner.nextLine();
 					}
-					}
-				
-			
+				}
 			}
+			System.out.println("Game over!");
+			System.out.println("You managed to get a streak of "+streak);
+			System.out.println("Thanks for playing!");
 		}
+		
+		//continues here, this is outside Else If
 	}
 }
