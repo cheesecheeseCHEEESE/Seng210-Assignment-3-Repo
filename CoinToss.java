@@ -143,7 +143,6 @@ public class CoinToss {
 					scanner.nextLine();
 				}
 			}
-			
 			scanner.nextLine();
 				
 			//fleshes out a list of coin tosses. The list of coin tosses is equal to what the user specified
@@ -161,46 +160,25 @@ public class CoinToss {
 			//List is used to track how many guess the player got correct
 			List<Boolean> didPlayerGuessCorrect = new ArrayList<>();
 			System.out.println("Now let the guessing begin!");
-			for(int i = 0; i < numOfTosses; i++)
+			
+			for(int i = 0; i < numOfTosses; i++) //Loop that handles the guessing (by using function)
 			{
-				int guessTextNum = i+1; //exists purely for the player's message, telling them what guess he's on.
-				System.out.println("Guess number " + guessTextNum);
-				boolean acceptableGuess = false; //for exiting exception loop
-				while(acceptableGuess == false)
+				boolean guessResult = CoinFlip(coinHeadFace, coinTailFace, coinTosses.get(i), scanner);
+				if(guessResult) 
 				{
-					System.out.println(coinHeadFace + " or " +coinTailFace+ "? (enter 'true' or 'false' to guess)");
-					try
-					{	boolean playerGuess;
-						playerGuess = scanner.nextBoolean();
-						
-						if(playerGuess == coinTosses.get(i))
-						{
-							System.out.println("CORRECT! Nice job!");
-							correctGuessStreak++;
-							didPlayerGuessCorrect.add(true);
-						}
-						else
-						{
-							System.out.println("Unfortunatly that is incorrect. Good try though!");
-							//set the highest streak to the current streak if current streak is higher
-							if(correctGuessStreak > highestStreak)
-							{
-								highestStreak = correctGuessStreak;
-							}
-							correctGuessStreak = 0;
-							didPlayerGuessCorrect.add(false);
-							
-						}
-						
-						scanner.nextLine(); //needed since many guesses will be made
-						acceptableGuess = true; //sucessful guess, exit loop
-					}
-					catch (Exception e)
-					{
-						System.out.println("Thats not a valid guess. Please try again");
-						scanner.nextLine();
-					}
+					correctGuessStreak++;
+					didPlayerGuessCorrect.add(true);	
 				}
+				else
+				{
+					if(correctGuessStreak > highestStreak)
+					{
+						highestStreak = correctGuessStreak;
+					}
+					correctGuessStreak = 0;
+					didPlayerGuessCorrect.add(false);
+				}
+
 			}
 			
 			//run one last time after the loop in case the player got ALL of them correct
@@ -240,7 +218,8 @@ public class CoinToss {
 			System.out.println("Your highest correct guess streak was "+highestStreak+" in a row!");
 			System.out.println("Hope you enjoyed!");
 			scanner.close();
-		}
+		}	
+		
 		else if(selectedGamemode == 2)
 		{
 			boolean brokeStreak = false;
@@ -248,43 +227,66 @@ public class CoinToss {
 			System.out.println("Now let the guessing begin!");
 			while(!brokeStreak)
 			{
-				boolean acceptableGuess = false; //for exiting exception loop
 				boolean headsOrTails = random.nextBoolean();
-				while(acceptableGuess == false)
+				boolean coinTossResult = CoinFlip(coinHeadFace, coinTailFace, headsOrTails, scanner);
+				
+				if(coinTossResult)
 				{
-					System.out.println(coinHeadFace + " or " +coinTailFace+ "? (enter 'true' or 'false' to guess)");
-					try
-					{	 
-						boolean playerGuess = scanner.nextBoolean();
-						
-						if(playerGuess == headsOrTails)
-						{
-							System.out.println("CORRECT! Keep going!");
-							streak++;
-							acceptableGuess = true;
-						}
-						else
-						{
-							System.out.println("oh...unfortunate");
-							brokeStreak = true;
-							acceptableGuess = true;
-						}
-						
-						scanner.nextLine(); //needed since many guesses will be made
-						acceptableGuess = true; //sucessful guess, exit loop
-					}
-					catch (Exception e)
-					{
-						System.out.println("Thats not a valid guess. Please try again");
-						scanner.nextLine();
-					}
+					System.out.println("Keep going!");
+					streak++;
+				}
+				else
+				{
+					System.out.println("oh...unfortunate");
+					brokeStreak = true;
 				}
 			}
+			
 			System.out.println("Game over!");
 			System.out.println("You managed to get a streak of "+streak);
 			System.out.println("Thanks for playing!");
 		}
-		
-		//continues here, this is outside Else If
+		else
+		{
+			System.out.println("This Else shouldn't be reachable");
+		}
+	}	
+	
+	//head or tail is whether the coin in question is Heads (true) or Tails (false)
+	public static boolean CoinFlip(String heads, String tails, Boolean headOrTail, Scanner scanner) 
+	{
+		boolean acceptableGuess = false;
+		while(acceptableGuess == false)
+		{
+			System.out.println(heads + " or " +tails+ "? (enter 'true' or 'false' to guess)");
+			try
+			{	boolean playerGuess;
+				boolean returnedValue; //Returns whether the player got it correct or not
+				playerGuess = scanner.nextBoolean();
+				
+				if(playerGuess == headOrTail)
+				{
+					System.out.println("CORRECT! Nice job!");
+					returnedValue = true;
+				}
+				else
+				{
+					System.out.println("Unfortunatly that is incorrect. Good try though!");
+					//set the highest streak to the current streak if current streak is higher
+					returnedValue = false;
+				}
+				
+				scanner.nextLine(); //needed since many guesses will be made
+				acceptableGuess = true; //sucessful guess, exit loop
+				return returnedValue;
+			}
+			catch (Exception e)
+			{
+				System.out.println("Thats not a valid guess. Please try again");
+				scanner.nextLine();
+			}
+		}
+		System.out.println("This message should not appear");
+		return false; //this shouldn't be reachable, but is required to stop java from freaking out
 	}
 }
